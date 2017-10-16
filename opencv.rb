@@ -3,25 +3,21 @@ class Opencv < Formula
   homepage "http://opencv.org/"
   url "https://github.com/opencv/opencv/archive/3.3.0.tar.gz"
   sha256 "8bb312b9d9fd17336dc1f8b3ac82f021ca50e2034afc866098866176d985adc6"
-  revision 3
-
-  bottle do
-    sha256 "386ac2caf18b558237cf8a8a510fce0c56213259ce18e8bcf418513829e790fe" => :high_sierra
-    sha256 "cf9f5f528cb2217a4fde2c635ce90d07b51e01564d7c66fc4413c41e22b17572" => :sierra
-    sha256 "bd88772952a81606b7ff43e7d3874213680d4d190c319360f3da603b76f1cfb3" => :el_capitan
-    sha256 "6073b44f5b601de364147a9b6b3ee784c6070303582cf3db9a513ce8a1796a0c" => :yosemite
-  end
+  revision 3.1
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
   depends_on "eigen"
   depends_on "ffmpeg"
+  depends_on "gphoto2"
+  depends_on "gstreamer"
   depends_on "jpeg"
   depends_on "libpng"
   depends_on "libtiff"
   depends_on "openexr"
   depends_on :python
   depends_on :python3
+  depends_on "qt"
   depends_on "numpy"
 
   needs :cxx11
@@ -60,16 +56,20 @@ class Opencv < Formula
       -DOPENCV_ENABLE_NONFREE=ON
       -DOPENCV_EXTRA_MODULES_PATH=#{buildpath}/opencv_contrib/modules
       -DWITH_1394=OFF
-      -DWITH_CUDA=OFF
+      -DWITH_AVFOUNDATION=ON
+      -DWITH_CUDA=ON
+      -DWITH_CUFFT=ON
+      -DWITH_CUBLAS=ON
       -DWITH_EIGEN=ON
       -DWITH_FFMPEG=ON
-      -DWITH_GPHOTO2=OFF
-      -DWITH_GSTREAMER=OFF
+      -DWITH_GPHOTO2=ON
+      -DWITH_GSTREAMER=ON
       -DWITH_JASPER=OFF
+      -DWITH_OPENCL=ON
       -DWITH_OPENEXR=ON
-      -DWITH_OPENGL=OFF
-      -DWITH_QT=OFF
-      -DWITH_TBB=OFF
+      -DWITH_OPENGL=ON
+      -DWITH_QT=ON
+      -DWITH_TBB=ON
       -DWITH_VTK=OFF
       -DBUILD_opencv_python2=ON
       -DBUILD_opencv_python3=ON
