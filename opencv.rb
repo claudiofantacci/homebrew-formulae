@@ -32,16 +32,6 @@ class Opencv < Formula
 
     resource("contrib").stage buildpath/"opencv_contrib"
 
-    # Reset PYTHONPATH, workaround for https://github.com/Homebrew/homebrew-science/pull/4885
-    ENV.delete("PYTHONPATH")
-
-    py_prefix = `python-config --prefix`.chomp
-    py_lib = "#{py_prefix}/lib"
-
-    py3_config = `python3-config --configdir`.chomp
-    py3_include = `python3 -c "import distutils.sysconfig as s; print(s.get_python_inc())"`.chomp
-    py3_version = Language::Python.major_minor_version "python3"
-
     args = std_cmake_args + %W[
       -DCMAKE_OSX_DEPLOYMENT_TARGET=
       -DBUILD_JASPER=OFF
@@ -75,18 +65,7 @@ class Opencv < Formula
       -DWITH_VTK=OFF
       -DBUILD_opencv_python2=ON
       -DBUILD_opencv_python3=ON
-      -DPYTHON2_EXECUTABLE=#{which "python"}
-      -DPYTHON2_LIBRARY=#{py_lib}/libpython2.7.dylib
-      -DPYTHON2_INCLUDE_DIR=#{py_prefix}/include/python2.7
-      -DPYTHON3_EXECUTABLE=#{which "python3"}
-      -DPYTHON3_LIBRARY=#{py3_config}/libpython#{py3_version}.dylib
-      -DPYTHON3_INCLUDE_DIR=#{py3_include}
     ]
-
-    if build.bottle?
-      args += %w[-DENABLE_SSE41=OFF -DENABLE_SSE42=OFF -DENABLE_AVX=OFF
-                 -DENABLE_AVX2=OFF]
-    end
 
     mkdir "build" do
       system "cmake", "..", *args
